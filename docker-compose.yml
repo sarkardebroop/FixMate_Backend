@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: fixmate-postgres
+    environment:
+      POSTGRES_USER: fixmate
+      POSTGRES_PASSWORD: fixmate
+      POSTGRES_DB: fixmate
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fixmate -d fixmate"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  pgdata:

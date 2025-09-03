@@ -1,0 +1,76 @@
+# spring:
+#   datasource:
+#     url: jdbc:postgresql://localhost:5432/fixmate
+#     username: fixmate
+#     password: fixmate
+#   jpa:
+#     hibernate:
+#       ddl-auto: validate
+#     open-in-view: false
+#   flyway:
+#     enabled: true
+#     baseline-on-migrate: true
+
+# management:
+#   endpoints.web.exposure.include: health,info
+
+# springdoc.swagger-ui.path: /swagger-ui/index.html
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: FixMate
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:fixmate}
+    username: ${DB_USER:fixmate}
+    password: ${DB_PASSWORD:fixmate}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 20000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when_authorized
+
+# Swagger UI
+springdoc:
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+# JWT settings (use env vars in real environments)
+app:
+  security:
+    jwt-secret: "A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8S9t0U1v2W3x4Y5z6"
+    jwt-expiration-minutes: 60
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+# Optional logging (uncomment if you want more detail while developing)
+#logging:
+#  level:
+#    org.springframework.web: INFO
+#    org.springframework.security: INFO
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.orm.jdbc.bind: TRACE
